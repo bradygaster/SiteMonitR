@@ -64,13 +64,13 @@ namespace SiteMonitR.WebJobs.EventDriven
 
             if (listofSiteRecords.ToList().Any(entity => entity.PartitionKey == cleansedUrl))
             {
-                var siteRecord = listofSiteRecords.ToList().Where(entity => entity.RowKey == cleansedUrl).FirstOrDefault();
+                var siteRecord = listofSiteRecords.ToList().Where(entity => entity.PartitionKey == cleansedUrl).FirstOrDefault();
                 recordTable.Execute(TableOperation.Delete(siteRecord));
             }
             // delete all the site's logs
             foreach (var siteResult in listofSiteResults)
             {
-                if (siteResult.PartitionKey == cleansedUrl)
+                if (siteResult.RowKey == cleansedUrl)
                 {
                     resultTable.Execute(TableOperation.Delete(siteResult));
                 }
