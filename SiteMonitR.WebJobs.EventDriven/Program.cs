@@ -62,7 +62,7 @@ namespace SiteMonitR.WebJobs.EventDriven
         {
             var cleansedUrl = SiteMonitRConfiguration.CleanUrlForRowKey(url);
 
-            if (listofSiteRecords.ToList().Any(entity => entity.PartitionKey == cleansedUrl))
+            if (listofSiteRecords.ToList().Any(entity => entity.RowKey == cleansedUrl))
             {
                 var siteRecord = listofSiteRecords.ToList().Where(entity => entity.RowKey == cleansedUrl).FirstOrDefault();
                 recordTable.Execute(TableOperation.Delete(siteRecord));
@@ -70,7 +70,7 @@ namespace SiteMonitR.WebJobs.EventDriven
             // delete all the site's logs
             foreach (var siteResult in listofSiteResults)
             {
-                if (siteResult.PartitionKey == cleansedUrl)
+                if (siteResult.RowKey == cleansedUrl)
                 {
                     resultTable.Execute(TableOperation.Delete(siteResult));
                 }
